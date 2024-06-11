@@ -16,21 +16,21 @@ class MeteoblueFetchWeather
      */
     public static function fetchWeather($lat, $lon, $format)
     {
-        /*$url =
+        $url =
             "https://my.meteoblue.com/packages/basic-1h?" .
             http_build_query([
                 "apikey" => $_ENV['API_KEY'],
                 "lat" => $lat,
                 "lon" => $lon,
                 "format"=>$format
-            ]);*/
-        $url = "https://my.meteoblue.com/packages/basic-10min_basic-1h_basic-day?".
+            ]);
+        /*$url = "https://my.meteoblue.com/packages/basic-10min_basic-1h_basic-day?".
             http_build_query([
                 "lat" => "47.56",
                 "lon" => "7.57",
                 "apikey" =>"DEMOKEY",
                 "sig"=>"6dc30666add97137e75d10d98debedbb"
-            ]);
+            ]);*/
         try {
             $response = self::curlGetContents($url);
             

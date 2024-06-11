@@ -20,7 +20,7 @@ class ErrorView
     }
 
     /**
-     * Render SVG Output
+     * Render Output
      * @return string
      */
     public function render()

@@ -1,79 +1,45 @@
 <?php
-echo "<h1>Weather forcast for {$lat} {$lon}</h1>
-    <table style='border:1px solid #000;'>
-        <tr><th>Date</th>
-        <td>Weather</td>
-        <th>Wind Direction</th>
-        <th>Wind Speed</th>
-        <th>Temperature</th>
-        <th>Precipitation</th>
-        <th>Precipitation Prob</th>
-        <th>UV Index</th>
-        <th>Humidity</th>
-    </tr>";
-
+echo "<body style=\"font-family: Arial, Helvetica, sans-serif;font-size:12pt\" >
+    <table style=\"font-family: Arial, Helvetica, sans-serif;font-size:10pt;margin: 10px auto; border-collapse: collapse; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\">
+        <thead><tr><td colspan='9'><div style=\"margin: 10px auto; font-weight:bold\">Weather forcast for {$lat} {$lon}</div></td></tr>
+        <tr style=\"background-color: #2C8F30; color: white; text-align: center;\">
+            <th style=\"padding: 5px; border: 1px solid #ddd;min-width:100px\">Date</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Weather</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Wind Direction</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Wind Speed</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Temperature</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Precipitation</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Precipitation Prob</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">UV Index</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Humidity</th>
+        </tr></thead><tbody>";
+$index = 0;
 foreach($data->data_1h->time as $key => $date){
-    switch (true){
-        case ($data->data_1h->winddirection[$key]>=348.75 || $data->data_1h->winddirection[$key]<11.25):
-            $img = "<img src='images/windir/N.png' alt='N'>";
+    $windDirection = $data->data_1h->winddirection[$key];
+    $directions = [ 'N' => [348.75, 11.25],'NNE' => [11.25, 33.75],'NE' => [33.75, 56.25],'ENE' => [56.25, 78.75],'E' => [78.75, 101.25],'ESE' => [101.25, 123.75],'SE' => [123.75, 146.25],'SSE' => [146.25, 168.75],'S' => [168.75, 191.25],'SSW' => [191.25, 213.75],'SW' => [213.75, 236.25],'WSW' => [236.25, 258.75],'W' => [258.75, 281.25],'WNW' => [281.25, 303.75],'NW' => [303.75, 326.25],'NNW' => [326.25, 348.75] ];
+    foreach ($directions as $dir => $range) {
+        if (($windDirection >= $range[0] && $windDirection < $range[1]) || ($range[0] > $range[1] && ($windDirection >= $range[0] || $windDirection < $range[1]))) {
+            $img = "<img src='images/windir/{$dir}.png' alt='{$dir}'>";
             break;
-        case ( $data->data_1h->winddirection[$key]<33.75):
-            $img = "<img src='images/windir/NNE.png' alt='NNE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<56.25):
-            $img = "<img src='images/windir/NE.png' alt='NE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<78.75):
-            $img = "<img src='images/windir/ENE.png' alt='ENE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<101.25):
-            $img = "<img src='images/windir/E.png' alt='E'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<123.75):
-            $img = "<img src='images/windir/ESE.png' alt='ESE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<146.25):
-            $img = "<img src='images/windir/SE.png' alt='SE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<168.75):
-            $img = "<img src='images/windir/SSE.png' alt='SSE'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<191.25):
-            $img = "<img src='images/windir/S.png' alt='S'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<213.75):
-            $img = "<img src='images/windir/SSW.png' alt='SSW'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<236.25):
-            $img = "<img src='images/windir/SW.png' alt='SW'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<258.75):
-            $img = "<img src='images/windir/WSW.png' alt='WSW'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]<281.25):
-            $img = "<img src='images/windir/W.png' alt='W'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]< 303.75):
-            $img = "<img src='images/windir/WNW.png' alt='WNW'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]< 326.25):
-            $img = "<img src='images/windir/NW.png' alt='NW'>";
-            break;
-        case ( $data->data_1h->winddirection[$key]< 348.75):
-            $img = "<img src='images/windir/NNW.png' alt='NNW'>";
-            break;
+        }
     }
+    $date = date('d/m/Y H:i', strtotime($date));
+    if ($index>24){
+        exit;
+    }
+    $style = ($index % 2 ==0 )?'style="background-color: #f9f9f9; text-align: center;"':'style="background-color: #f1f1f1; text-align: center;"';
     echo "<tr>
-            <td>{$date }</td>
-            <td><img src='images/png/".substr("00".$data->data_1h->pictocode[$key],-2).($data->data_1h->isdaylight[$key]=='1'?"_day":"_night").".png' width='40' alt='{$data->data_1h->pictocode[$key]}'></td>
-            <td>{$img}</td>
-            <td>{$data->data_1h->windspeed[$key]}</td>
-            <td>{$data->data_1h->temperature[$key]} °C</td>
-            <td>{$data->data_1h->precipitation[$key]}</td>
-            <td>{$data->data_1h->precipitation_probability[$key]} %</td>
-            <td>{$data->data_1h->uvindex[$key]}</td>
-            <td>{$data->data_1h->relativehumidity[$key]}</td>
+            <td {$style}>{$date}</td>
+            <td {$style}><img src='images/png/".substr("00".$data->data_1h->pictocode[$key],-2).($data->data_1h->isdaylight[$key]=='1'?"_day":"_night").".png' width='40' alt='{$data->data_1h->pictocode[$key]}'></td>
+            <td {$style}>{$img}</td>
+            <td {$style}>{$data->data_1h->windspeed[$key]}</td>
+            <td {$style}>{$data->data_1h->temperature[$key]} °C</td>
+            <td {$style}>{$data->data_1h->precipitation[$key]}</td>
+            <td {$style}>{$data->data_1h->precipitation_probability[$key]} %</td>
+            <td {$style}>{$data->data_1h->uvindex[$key]}</td>
+            <td {$style}>{$data->data_1h->relativehumidity[$key]}</td>
         </tr>";
-
+    $index++;
 }
-echo "</table>";
+echo "</tbody></table></body>";
+?>
