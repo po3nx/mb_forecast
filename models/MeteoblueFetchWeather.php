@@ -49,8 +49,13 @@ class MeteoblueFetchWeather
     private static function curlGetContents($url): string
     {
         $ch = curl_init();
+        $proxy = $_ENV['PROXY_SERVER'];
+        $proxy_user = $_ENV['PROXY_USER'];
+        $proxy_pass = $_ENV['PROXY_PASS'];
         curl_setopt($ch, CURLOPT_AUTOREFERER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user.":".$proxy_pass);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
