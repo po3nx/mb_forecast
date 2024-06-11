@@ -24,13 +24,13 @@ class MeteoblueFetchWeather
                 "lon" => $lon,
                 "format"=>$format
             ]);
-        /*$url = "https://my.meteoblue.com/packages/basic-10min_basic-1h_basic-day?".
+        $url = "https://my.meteoblue.com/packages/basic-10min_basic-1h_basic-day?".
             http_build_query([
                 "lat" => "47.56",
                 "lon" => "7.57",
                 "apikey" =>"DEMOKEY",
                 "sig"=>"6dc30666add97137e75d10d98debedbb"
-            ]);*/
+            ]);
         try {
             $response = self::curlGetContents($url);
             
@@ -49,6 +49,9 @@ class MeteoblueFetchWeather
     private static function curlGetContents($url): string
     {
         $ch = curl_init();
+        if ($ch === false) {
+            throw new Exception('failed to initialize');
+        }
         $proxy = $_ENV['PROXY_SERVER'];
         $proxy_user = $_ENV['PROXY_USER'];
         $proxy_pass = $_ENV['PROXY_PASS'];
@@ -60,8 +63,13 @@ class MeteoblueFetchWeather
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_VERBOSE, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
+        curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
+        if ($response === false) {
+            throw new Exception(curl_error($ch), curl_errno($ch));
+        }
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($httpCode != 200) {
