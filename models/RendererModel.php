@@ -61,14 +61,14 @@ class RendererModel
      * @param string $lat coordinate latitude
      * @param string $lon coordinate longitude
      * @param string $format The response format (JSON or CSV)
-     * @return string The data return as array
+     * @return array The data return as array
      */
     private function fetchWeather($lat, $lon, $format)
     {
         $data = MeteoblueFetchWeather::fetchWeather($lat, $lon, $format);
         if ($data) {
             // return the data
-            return json_decode($data);
+            return json_decode( (string) $data);
         }
         
         return [];
