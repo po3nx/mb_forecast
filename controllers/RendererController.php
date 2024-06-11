@@ -81,9 +81,9 @@ class RendererController
     }
 
     /**
-     * Get the rendered SVG
+     * Get the rendered output
      *
-     * @return string The SVG to output
+     * @return string The render to output
      */
     public function render(): string
     {

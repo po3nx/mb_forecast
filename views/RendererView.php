@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * View for rendering typing SVG
+ * View for rendering output
  */
 class RendererView
 {

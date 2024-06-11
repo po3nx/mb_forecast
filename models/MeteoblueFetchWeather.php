@@ -5,6 +5,15 @@
  */
 class MeteoblueFetchWeather
 {
+
+    /**
+     * Fetch Weather from Meteoblue
+     *
+     * @param string $lat coordinat latitude
+     * @param string $lon coordinate longitude 
+     * @param string $format response format (json/csv)
+     * @return json/csv The response data from API Endpoint
+     */
     public static function fetchWeather($lat, $lon, $format)
     {
         /*$url =
@@ -31,6 +40,12 @@ class MeteoblueFetchWeather
         }
     }
 
+    /**
+     * getContent from url using curl
+     *
+     * @param string $url The url to fetch
+     * @return json/csv data fetched from url
+     */
     private static function curlGetContents($url): string
     {
         $ch = curl_init();
@@ -45,7 +60,7 @@ class MeteoblueFetchWeather
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($httpCode != 200) {
-            throw new InvalidArgumentException("Failed to fetch Google Font from API.");
+            throw new InvalidArgumentException("Failed to fetch data from API.");
         }
         return $response;
     }
