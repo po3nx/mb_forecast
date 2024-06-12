@@ -1,9 +1,9 @@
 <?php
-echo "<body style=\"font-family: Arial, Helvetica, sans-serif;font-size:12pt\" >
+echo "<body style=\"font-family: Arial, Helvetica, sans-serif;font-size:11pt;color:#1F497D;\" >
     <table style=\"font-family: Arial, Helvetica, sans-serif;font-size:10pt;margin: 10px auto; border-collapse: collapse; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\">
         <thead><tr><td colspan='9'><div style=\"margin: 10px auto; font-weight:bold\">Weather forcast for {$lat} {$lon}</div></td></tr>
         <tr style=\"background-color: #2C8F30; color: white; text-align: center;\">
-            <th style=\"padding: 5px; border: 1px solid #ddd;min-width:100px\">Date</th>
+            <th style=\"padding: 5px; border: 1px solid #ddd;\">Time</th>
             <th style=\"padding: 5px; border: 1px solid #ddd;\">Weather</th>
             <th style=\"padding: 5px; border: 1px solid #ddd;\">Wind Direction</th>
             <th style=\"padding: 5px; border: 1px solid #ddd;\">Wind Speed</th>
@@ -23,8 +23,8 @@ foreach($data->data_1h->time as $key => $date){
             break;
         }
     }
-    $date = date('d/m/Y H:i', strtotime($date));
-    if ($index>24){
+    $date = date('H:i', strtotime($date));
+    if ($index>=24){
         exit;
     }
     $style = ($index % 2 ==0 )?'style="background-color: #f9f9f9; text-align: center;"':'style="background-color: #f1f1f1; text-align: center;"';
