@@ -59,8 +59,8 @@ class MeteoblueFetchWeather
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_VERBOSE, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
-        if ($_ENV['USE_PROXY']){
+
+        if ($_ENV['USE_PROXY']==="true"){
             $proxy = $_ENV['PROXY_SERVER'];
             $proxy_user = $_ENV['PROXY_USER'];
             $proxy_pass = $_ENV['PROXY_PASS'];
