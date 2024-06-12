@@ -51,20 +51,24 @@ class MeteoblueFetchWeather
         if ($ch === false) {
             throw new Exception('failed to initialize');
         }
-        $proxy = $_ENV['PROXY_SERVER'];
-        $proxy_user = $_ENV['PROXY_USER'];
-        $proxy_pass = $_ENV['PROXY_PASS'];
+        
         curl_setopt($ch, CURLOPT_AUTOREFERER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user.":".$proxy_pass);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_VERBOSE, false);
-        curl_setopt($ch, CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
-        curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        
+        if ($_ENV['USE_PROXY']){
+            $proxy = $_ENV['PROXY_SERVER'];
+            $proxy_user = $_ENV['PROXY_USER'];
+            $proxy_pass = $_ENV['PROXY_PASS'];
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+            curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user.":".$proxy_pass);
+            curl_setopt($ch, CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
+            curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_NTLM);
+        }
         $response = curl_exec($ch);
         if ($response === false) {
             throw new Exception(curl_error($ch), curl_errno($ch));
